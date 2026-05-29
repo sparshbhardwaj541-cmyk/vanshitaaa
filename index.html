@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Drag the Papers ❤️</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Short+Stack&family=Homemade+Apple&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #fce4ec;
+      min-height: 100vh;
+      overflow: auto;
+      font-family: "Short Stack", cursive;
+      position: relative;
+      touch-action: manipulation;
+    }
+
+    .paper {
+      position: absolute;
+      background: white;
+      padding: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      cursor: grab;
+      touch-action: none;
+      max-width: 300px;
+      user-select: none;
+    }
+
+    .paper img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .paper:nth-child(1) {
+      left: 20px;
+      top: 20px;
+    }
+
+    .paper:nth-child(2) {
+      left: 60px;
+      top: 120px;
+    }
+
+    .paper:nth-child(3) {
+      left: 100px;
+      top: 220px;
+    }
+
+    .paper:nth-child(4) {
+      left: 140px;
+      top: 320px;
+    }
+
+    .paper:nth-child(5) {
+      left: 180px;
+      top: 420px;
+    }
+
+    .paper:nth-child(6) {
+      left: 220px;
+      top: 520px;
+    }
+
+    .heart {
+      width: 120px;
+      height: 120px;
+      background: red;
+      transform: rotate(-45deg);
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 120px;
+      height: 120px;
+      background: red;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart::before {
+      top: -60px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 60px;
+      top: 0;
+    }
+
+    .red {
+      background: #ffebee;
+    }
+
+    .p1,
+    .p2 {
+      font-size: 1.4rem;
+      text-align: center;
+      margin: 5px 0;
+    }
+
+    @media (max-width: 768px) {
+      .paper {
+        max-width: 250px;
+      }
+
+      .p1,
+      .p2 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="paper heart"></div>
+
+  <div class="paper image">
+    <p>And I adore your</p>
+    <p>dance 😍</p>
+    <img src="images/1.jpeg" alt="">
+  </div>
+
+  <div class="paper image">
+    <p>You look amazing ❤️</p>
+    <img src="images/2.jpeg" alt="">
+  </div>
+
+  <div class="paper image">
+    <p>How can someone be</p>
+    <p>so cute ❤️</p>
+    <img src="images/3.jpg" alt="">
+  </div>
+
+  <div class="paper red">
+    <p class="p1">And so</p>
+    <p class="p2">beautiful 😍</p>
+  </div>
+
+  <div class="paper">
+    <p class="p1">You are Cute</p>
+    <p class="p1">Amazing ❤️</p>
+  </div>
+
+  <div class="paper">
+    <p class="p1">Drag the papers to move!</p>
+  </div>
+
+  <script>
+    const papers = document.querySelectorAll('.paper');
+    let highestZ = 1;
+
+    papers.forEach((paper) => {
+      let isDragging = false;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      function startDrag(e) {
+        isDragging = true;
+        highestZ++;
+        paper.style.zIndex = highestZ;
+
+        const point = e.touches ? e.touches[0] : e;
+
+        offsetX = point.clientX - paper.offsetLeft;
+        offsetY = point.clientY - paper.offsetTop;
+      }
+
+      function drag(e) {
+        if (!isDragging) return;
+
+        e.preventDefault();
+
+        const point = e.touches ? e.touches[0] : e;
+
+        paper.style.left = (point.clientX - offsetX) + 'px';
+        paper.style.top = (point.clientY - offsetY) + 'px';
+      }
+
+      function stopDrag() {
+        isDragging = false;
+      }
+
+      paper.addEventListener('mousedown', startDrag);
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('mouseup', stopDrag);
+
+      paper.addEventListener('touchstart', startDrag, { passive: false });
+      document.addEventListener('touchmove', drag, { passive: false });
+      document.addEventListener('touchend', stopDrag);
+    });
+  </script>
+
+</body>
+</html>
